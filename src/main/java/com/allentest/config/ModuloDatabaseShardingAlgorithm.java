@@ -13,7 +13,9 @@ public class ModuloDatabaseShardingAlgorithm implements SingleKeyDatabaseShardin
         //availableTargetNames就是所有的库名（ds_0,ds_1)
         //shardingValue就是在DataSourceConfig里指定的user_id,代码就是如果user_id是偶数就算到ds_0数据库，其他的就放ds_1数据库
         for (String each : availableTargetNames) {
-            if (each.endsWith(shardingValue.getValue() % 2 + "")) {
+            System.err.println("data:"+shardingValue);
+            System.out.println("databaseName:"+each);
+            if (each.endsWith(shardingValue.getValue() % 2 + 1+"")) {
                 return each;
             }
         }
