@@ -5,7 +5,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "t_order")
+@Table(name = "t_order_0")
 public class Order {
     @Id
     private Long orderId;
