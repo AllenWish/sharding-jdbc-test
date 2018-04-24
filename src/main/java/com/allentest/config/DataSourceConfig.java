@@ -27,41 +27,18 @@ public class DataSourceConfig {
         dataSourceMap.put("shjd-test-1", createDataSource("shjd-test-1"));
         dataSourceMap.put("shjd-test-2", createDataSource("shjd-test-2"));
 
-
-        /*dataSourceMap.put("sharding-test-0", createDataSource("sharding-jdbc-test"));
-        dataSourceMap.put("sharding-test-1", createDataSource("sharding-jdbc-test-1"));
-        dataSourceMap.put("sharding-test-2", createDataSource("sharding-jdbc-test-2"));*/
-
-
-
-        // 构建读写分离配置
-        MasterSlaveRuleConfiguration masterSlaveRuleConfig0 = new MasterSlaveRuleConfiguration();
-        masterSlaveRuleConfig0.setName("ds_0");
-        masterSlaveRuleConfig0.setMasterDataSourceName("shjd-test-0");
-        masterSlaveRuleConfig0.getSlaveDataSourceNames().add("shjd-test-1");
-        masterSlaveRuleConfig0.getSlaveDataSourceNames().add("shjd-test-2");
-
-
-        /*MasterSlaveRuleConfiguration masterSlaveRuleConfig1 = new MasterSlaveRuleConfiguration();
-        masterSlaveRuleConfig1.setName("ds_1");
-        masterSlaveRuleConfig1.setMasterDataSourceName("sharding-test-0");
-        masterSlaveRuleConfig1.getSlaveDataSourceNames().add("sharding-test-1");
-        masterSlaveRuleConfig1.getSlaveDataSourceNames().add("sharding-test-2");*/
-
         TableRuleConfiguration orderTableRuleConfig = new TableRuleConfiguration();
         orderTableRuleConfig.setLogicTable("t_order");
-        orderTableRuleConfig.setActualDataNodes("ds_${0..1}.t_order_0");
+        orderTableRuleConfig.setActualDataNodes("shjd-test-${0..2}.t_order_${0..1}");
 
         //通过ShardingSlaveDataSourceFactory继续创建ShardingDataSource
 
         ShardingRuleConfiguration shardingRuleConfig = new ShardingRuleConfiguration();
-        shardingRuleConfig.getMasterSlaveRuleConfigs().add(masterSlaveRuleConfig0);
-        //shardingRuleConfig.getMasterSlaveRuleConfigs().add(masterSlaveRuleConfig1);
         shardingRuleConfig.getTableRuleConfigs().add(orderTableRuleConfig);
 
-        shardingRuleConfig.setDefaultDatabaseShardingStrategyConfig(new MyShardingStrategyConfiguration("user_id", "ds_${user_id % 2}"));
+        shardingRuleConfig.setDefaultDatabaseShardingStrategyConfig(new MyShardingStrategyConfiguration("user_id", "shjd-test-${user_id % 3}"));
 
-        shardingRuleConfig.setDefaultTableShardingStrategyConfig(new MyShardingStrategyConfiguration("order_id","t_order_0"));
+        shardingRuleConfig.setDefaultTableShardingStrategyConfig(new MyShardingStrategyConfiguration("order_id","t_order_${order_id % 2}"));
 
         DataSource  dataSource = ShardingDataSourceFactory.createDataSource(dataSourceMap, shardingRuleConfig,new HashMap<>(),null);
 
