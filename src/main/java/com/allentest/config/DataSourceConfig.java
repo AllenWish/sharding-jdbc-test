@@ -1,10 +1,12 @@
 package com.allentest.config;
 import com.alibaba.druid.pool.DruidDataSource;
 import com.mysql.jdbc.Driver;
+import io.shardingjdbc.core.api.MasterSlaveDataSourceFactory;
 import io.shardingjdbc.core.api.ShardingDataSourceFactory;
 import io.shardingjdbc.core.api.config.MasterSlaveRuleConfiguration;
 import io.shardingjdbc.core.api.config.ShardingRuleConfiguration;
 import io.shardingjdbc.core.api.config.TableRuleConfiguration;
+import io.shardingjdbc.core.api.config.strategy.InlineShardingStrategyConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -41,27 +43,27 @@ public class DataSourceConfig {
         masterSlaveRuleConfig0.getSlaveDataSourceNames().add("shjd-test-1");
         masterSlaveRuleConfig0.getSlaveDataSourceNames().add("shjd-test-2");
 
-
         MasterSlaveRuleConfiguration masterSlaveRuleConfig1 = new MasterSlaveRuleConfiguration();
         masterSlaveRuleConfig1.setName("ds_1");
         masterSlaveRuleConfig1.setMasterDataSourceName("sharding-test-0");
         masterSlaveRuleConfig1.getSlaveDataSourceNames().add("sharding-test-1");
         masterSlaveRuleConfig1.getSlaveDataSourceNames().add("sharding-test-2");
 
+        //构建tablerule 配置
         TableRuleConfiguration orderTableRuleConfig = new TableRuleConfiguration();
         orderTableRuleConfig.setLogicTable("t_order");
         orderTableRuleConfig.setActualDataNodes("ds_${0..1}.t_order_0");
 
         //通过ShardingSlaveDataSourceFactory继续创建ShardingDataSource
-
         ShardingRuleConfiguration shardingRuleConfig = new ShardingRuleConfiguration();
-        shardingRuleConfig.getMasterSlaveRuleConfigs().add(masterSlaveRuleConfig0);
+        //注入读写分离配置
         shardingRuleConfig.getMasterSlaveRuleConfigs().add(masterSlaveRuleConfig1);
+        shardingRuleConfig.getMasterSlaveRuleConfigs().add(masterSlaveRuleConfig0);
         shardingRuleConfig.getTableRuleConfigs().add(orderTableRuleConfig);
 
-        shardingRuleConfig.setDefaultDatabaseShardingStrategyConfig(new MyShardingStrategyConfiguration("user_id", "ds_${user_id % 2}"));
+        shardingRuleConfig.setDefaultDatabaseShardingStrategyConfig(new InlineShardingStrategyConfiguration("user_id", "ds_${user_id % 2}"));
 
-        shardingRuleConfig.setDefaultTableShardingStrategyConfig(new MyShardingStrategyConfiguration("order_id","t_order_0"));
+        shardingRuleConfig.setDefaultTableShardingStrategyConfig(new InlineShardingStrategyConfiguration("order_id","t_order_0"));
 
         DataSource  dataSource = ShardingDataSourceFactory.createDataSource(dataSourceMap, shardingRuleConfig,new HashMap<>(),null);
 

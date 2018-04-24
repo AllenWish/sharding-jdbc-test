@@ -23,20 +23,7 @@ public class MyShardingStrategyConfiguration implements ShardingStrategyConfigur
     @ConstructorProperties({"shardingColumns", "algorithmClassName"})
     public MyShardingStrategyConfiguration(String shardingColumns, String algorithmClassName) {
         this.shardingColumns = shardingColumns;
-
         System.out.println("=============================="+algorithmClassName);
-        /*if(algorithmClassName==null||algorithmClassName.length()<=0){
-            algorithmClassName = "shjd-test-0";
-        }else
-        try {
-            if(Integer.valueOf(algorithmClassName)==1){
-                algorithmClassName = "sharding-test-0";
-            }else{
-                algorithmClassName = "shjd-test-0";
-            }
-        } catch (NumberFormatException e) {
-            algorithmClassName = "shjd-test-0";
-        }*/
         this.algorithmClassName = algorithmClassName;
     }
 
