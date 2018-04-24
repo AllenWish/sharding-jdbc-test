@@ -25,15 +25,16 @@ public class DataSourceConfig {
     private DataSource buildDataSource() {
         //设置分库映射
         Map<String, DataSource> dataSourceMap = new HashMap<>(2);
-        //添加两个数据库ds_0,ds_1到map里
+        //3库2表
         /*dataSourceMap.put("shjd-test-0", createDataSource("shjd-test"));
         dataSourceMap.put("shjd-test-1", createDataSource("shjd-test-1"));
         dataSourceMap.put("shjd-test-2", createDataSource("shjd-test-2"));*/
-        dataSourceMap.put("shjd-test-1", createDataSource("shjd-test-1"));
-        dataSourceMap.put("shjd-test-2", createDataSource("shjd-test-2"));
+        dataSourceMap.put("shjd-test-0", createDataSource("sharding-jdbc-test"));
+        dataSourceMap.put("shjd-test-1", createDataSource("sharding-jdbc-test-1"));
+        dataSourceMap.put("shjd-test-2", createDataSource("sharding-jdbc-test-2"));
         //设置默认db为ds_0，也就是为那些没有配置分库分表策略的指定的默认库
         //如果只有一个库，也就是不需要分库的话，map里只放一个映射就行了，只有一个库时不需要指定默认库，但2个及以上时必须指定默认库，否则那些没有配置策略的表将无法操作数据
-        DataSourceRule dataSourceRule = new DataSourceRule(dataSourceMap, "shjd-test-1");
+        DataSourceRule dataSourceRule = new DataSourceRule(dataSourceMap, "shjd-test-0");
 
         //设置分表映射，将t_order_0和t_order_1两个实际的表映射到t_order逻辑表
         //0和1两个表是真实的表，t_order是个虚拟不存在的表，只是供使用。如查询所有数据就是select * from t_order就能查完0和1表的
