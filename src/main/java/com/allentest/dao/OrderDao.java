@@ -1,22 +1,22 @@
-package com.allentest.service;
+package com.allentest.dao;
 
 import com.allentest.entity.Order;
+import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
-
-public interface OrderService{
+@Mapper
+public interface OrderDao {
     void createIfNotExistsTable();
 
     void truncateTable();
 
-    Long save(Order model);
+    Long insert(Order model);
 
     void delete(Long orderId);
 
     void dropTable();
 
     List<Order> findAll();
-
 
 }
