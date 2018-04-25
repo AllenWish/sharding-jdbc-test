@@ -45,4 +45,9 @@ public class OrderServiceImp implements OrderService{
     public List<Order> findAll() {
         return orderDao.findAll();
     }
+
+    @Override
+    public List<Order> findById(long userId) {
+        return orderDao.findById(userId);
+    }
 }

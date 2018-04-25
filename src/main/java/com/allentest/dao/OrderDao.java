@@ -19,4 +19,5 @@ public interface OrderDao {
 
     List<Order> findAll();
 
+    List<Order> findById(long userId);
 }

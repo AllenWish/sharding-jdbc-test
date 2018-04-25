@@ -3,8 +3,7 @@ package com.allentest.controller;
 import com.allentest.entity.Order;
 import com.allentest.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Created by AllenWish on 2018/4/23.
@@ -33,7 +32,12 @@ public class OrderController {
     }
 
     @RequestMapping("query")
-    private Object queryAll() {
+    public Object queryAll() {
         return orderService.findAll();
+    }
+
+    @GetMapping("/find/{userId}")
+    public Object queryById(@PathVariable Integer userId){
+        return orderService.findById(userId);
     }
 }
