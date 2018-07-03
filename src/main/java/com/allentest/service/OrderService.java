@@ -1,23 +1,19 @@
 package com.allentest.service;
 
-import com.allentest.entity.Order;
+import com.allentest.entity.TOrder;
 
 import java.util.List;
 
 
 public interface OrderService{
-    void createIfNotExistsTable();
 
-    void truncateTable();
-
-    Long save(Order model);
+    int save(TOrder model);
 
     void delete(Long orderId);
 
-    void dropTable();
 
-    List<Order> findAll();
+    List<TOrder> findAll();
 
 
-    List<Order> findById(long userId);
+    List<TOrder> findById(long userId);
 }

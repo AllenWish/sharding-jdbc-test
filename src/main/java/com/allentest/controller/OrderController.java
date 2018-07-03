@@ -1,6 +1,6 @@
 package com.allentest.controller;
 
-import com.allentest.entity.Order;
+import com.allentest.entity.TOrder;
 import com.allentest.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -16,17 +16,13 @@ public class OrderController {
 
     @RequestMapping("/add")
     public Object add() {
-        for (int i = 0; i < 10; i++) {
-            Order order = new Order();
-            order.setUserId((long) i);
-            order.setOrderId((long) i);
-            orderService.save(order);
-        }
-        for (int i = 10; i < 20; i++) {
-            Order order = new Order();
-            order.setUserId((long) i + 1);
-            order.setOrderId((long) i);
-            orderService.save(order);
+        for (int i = 0; i < 2; i++) {
+            for (int j = 0; j < 2; j++) {
+                TOrder TOrder = new TOrder();
+                TOrder.setUserId((long) j);
+                TOrder.setOrderId((long) i);
+                orderService.save(TOrder);
+            }
         }
         return "success";
     }
@@ -37,7 +33,7 @@ public class OrderController {
     }
 
     @GetMapping("/find/{userId}")
-    public Object queryById(@PathVariable Integer userId){
+    public Object queryById(@PathVariable Integer userId) {
         return orderService.findById(userId);
     }
 }
